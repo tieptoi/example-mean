@@ -1,0 +1,1 @@
+web: NODE_ENV=production MONGOLAB_URI=mongodb://admin:admin123@ds035310.mongolab.com:35310/heroku_gxh8nk40 npm start

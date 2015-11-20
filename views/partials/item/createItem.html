@@ -1,0 +1,167 @@
+<section id="createForm">
+    <div class="container">
+        <form name="itemForm" class="form-horizontal" ng-submit="submitForm(itemForm.$valid)" novalidate="">
+            <div class="row">
+                <div class="col-md-offset-4 col-md-4 text-center header">
+                    <h1><strong>{{header}}</strong></h1>
+                </div>
+            </div>
+            <!-- NAME -->
+            <div class="form-group" ng-class="{ 'has-error': itemForm.name.$touched && itemForm.name.$invalid }">
+                <label class="control-label col-md-2">Name</label>
+                <div class="col-md-5 text-center">
+                    <input type="text" name="name" class="form-control" ng-model="item.name" placeholder="Name" required="">
+                    <div class="help-block" ng-messages="itemForm.name.$error" ng-show="itemForm.name.$touched">
+                        <div ng-messages-include="template/ngMessage.text.html"></div>
+                    </div>
+                </div>
+            </div>
+            <!-- CATEGORY -->
+            <div class="form-group">
+                <label class="control-label col-md-2">Category</label>
+                <div class="col-md-5 text-center">
+                    <select class="form-control" name="category" ng-model="item.category">
+                        <option value="">Please select category</option>
+                        <option value="Shoes">Shoes</option>
+                        <option value="Bag">Bag</option>
+                        <option value="Clothes">Clothes</option>
+                        <option value="Wallet">Wallet</option>
+                        <option value="Other">Other</option>
+                    </select>
+                </div>
+            </div>
+            <!-- DESCRIPTION -->
+            <div class="form-group" ng-class="{ 'has-error': itemForm.description.$touched && itemForm.description.$invalid }">
+                <label class="control-label col-md-2">Description</label>
+                <div class="col-md-7 text-center">
+                    <textarea name="description" class="form-control" ng-model="item.description" ng-minlength="10" ng-maxlength="200" required="" placeholder="Description"></textarea>
+                    <div class="help-block" ng-messages="itemForm.description.$error" ng-show="itemForm.description.$touched">
+                        <div ng-messages-include="template/ngMessage.text.html"></div>
+                    </div>
+                </div>
+            </div>
+            <!-- Specification -->
+            <div class="form-group" ng-class="{ 'has-error': itemForm.specification.$touched && itemForm.specification.$invalid }">
+                <label class="control-label col-md-2">Specification</label>
+                <div class="col-md-7 text-center">
+                    <textarea name="specification" class="form-control" ng-model="item.specification" ng-minlength="10" ng-maxlength="200" required="" placeholder="Specification"></textarea>
+                    <div class="help-block" ng-messages="itemForm.specification.$error" ng-show="itemForm.specification.$touched">
+                        <div ng-messages-include="template/ngMessage.text.html"></div>
+                    </div>
+                </div>
+            </div>
+            <!-- PRICE -->
+            <div class="form-group" ng-class="{ 'has-error': itemForm.price.$touched && itemForm.price.$invalid }">
+                <label class="control-label col-md-2">Price</label>
+                <div class="col-md-3 text-center">
+                    <input type="number" name="price" class="form-control" ng-model="item.price" ng-minlength="1" ng-maxlength="3" min="0" max="999" required="">
+                    <div class="help-block" ng-messages="itemForm.price.$error" ng-show="itemForm.price.$touched">
+                        <div ng-messages-include="template/ngMessage.num.html"></div>
+                    </div>
+                </div>
+            </div>
+            <!-- Images -->
+            <div class="form-group">
+                <label class="control-label col-md-2">Images</label>
+                <div class="col-md-10 pull-left">
+                    <input type="file" nv-file-select="" uploader="uploader">
+                    <span class="help-block">Please upload valid photo file(png,jpg,gif,...)</span>
+                    <br>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th width="50%">Name</th>
+                                <th ng-show="uploader.isHTML5">Size</th>
+                                <th ng-show="uploader.isHTML5">Progress</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="item in uploader.queue">
+                                <td>
+                                    <strong>{{ item.file.name }}</strong>
+                                    <!-- Image preview -->
+                                    <!--auto height-->
+                                    <!--<div ng-thumb="{ file: item.file, width: 100 }"></div>-->
+                                    <!--auto width-->
+                                    <div ng-show="uploader.isHTML5" ng-thumb="{ file: item._file, height: 100 }"></div>
+                                    <!--fixed width and height -->
+                                    <!--<div ng-thumb="{ file: item.file, width: 100, height: 100 }"></div>-->
+                                </td>
+                                <td ng-show="uploader.isHTML5" nowrap="nowrap">{{ item.file.size/1024/1024|number:2 }} MB</td>
+                                <td ng-show="uploader.isHTML5">
+                                    <div class="progress" style="margin-bottom: 0">
+                                        <div class="progress-bar" role="progressbar" ng-style="{ 'width': item.progress + '%' }"></div>
+                                    </div>
+                                </td>
+                                <td class="text-center">
+                                    <span ng-show="item.isSuccess"><i class="glyphicon glyphicon-ok"></i></span>
+                                    <span ng-show="item.isCancel"><i class="glyphicon glyphicon-ban-circle"></i></span>
+                                    <span ng-show="item.isError"><i class="glyphicon glyphicon-remove"></i></span>
+                                </td>
+                                <td nowrap="nowrap">
+                                    <button type="button" class="btn btn-success btn-xs" ng-click="item.upload()" ng-disabled="item.isReady || item.isUploading || item.isSuccess">
+                                        <span class="glyphicon glyphicon-upload"></span> Upload
+                                    </button>
+                                    <button type="button" class="btn btn-warning btn-xs" ng-click="item.cancel()" ng-disabled="!item.isUploading">
+                                        <span class="glyphicon glyphicon-ban-circle"></span> Cancel
+                                    </button>
+                                    <button type="button" class="btn btn-danger btn-xs" ng-click="item.remove()">
+                                        <span class="glyphicon glyphicon-trash"></span> Remove
+                                    </button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <!-- QUANTITY -->
+            <div class="form-group" ng-class="{ 'has-error': itemForm.quantity.$touched && itemForm.quantity.$invalid }">
+                <label class="control-label col-md-2">Quanity</label>
+                <div class="col-md-3 text-center">
+                    <input type="number" name="quantity" class="form-control" ng-model="item.quantity" ng-minlength="1" ng-maxlength="3" min="0" max="999" required="">
+                    <div class="help-block" ng-messages="itemForm.quantity.$error" ng-show="itemForm.quantity.$touched">
+                        <div ng-messages-include="template/ngMessage.num.html"></div>
+                    </div>
+                </div>
+            </div>
+            <!-- IS SALE -->
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <div class="checkbox">
+                        <label>
+                            <input type="checkbox" ng-model="item.isSale"> Is Sale
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <!-- DISCOUNT PERCENTAGE -->
+            <div class="form-group" ng-class="{ 'has-error': itemForm.discountPct.$touched && itemForm.discountPct.$invalid }" ng-show="item.isSale">
+                <label class="control-label col-md-2">Discount(%)</label>
+                <div class="col-md-3 text-center">
+                    <input type="number" name="discountPct" class="form-control" ng-model="item.discountPct" ng-disabled="!item.isSale" placeholder="%">
+                    <div class="help-block" ng-messages="itemForm.discountPct.$error" ng-show="itemForm.discountPct.$touched">
+                        <div ng-messages-include="template/ngMessage.num.html"></div>
+                    </div>
+                </div>
+            </div>
+            <!-- Can be purchased -->
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <div class="checkbox">
+                        <label>
+                            <input type="checkbox" ng-model="item.canPurchase"> Can be purchased
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <!-- SUBMIT BUTTON -->
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-4">
+                    <button type="submit" class="btn btn-primary" ng-disabled="itemForm.$invalid">Submit</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</section>

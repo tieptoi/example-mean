@@ -3,14 +3,15 @@
 var express = require('express'),
     path = require('path'),
     fs = require('fs'),
-    mongoose = require('mongoose');
+    mongoose = require('mongoose'),
+    passport = require('passport');
 
 /**
  * Main application file
  */
 
 // Set default node environment to development
-process.env.NODE_ENV = process.env.NODE_ENV || 'production';
+process.env.NODE_ENV = 'production';
 
 // Application Config
 var config = require('./lib/config/config');
@@ -27,15 +28,18 @@ fs.readdirSync(modelsPath).forEach(function (file) {
 });
 
 // Populate empty DB with sample data
-require('./lib/config/dummydata');
+//require('./lib/config/dummydata');
 
 var app = express();
 
+// Passport config
+require('./lib/config/passport')(passport); // pass passport for configuration
+
 // Express settings
-require('./lib/config/express')(app);
+require('./lib/config/express')(app, passport);
 
 // Routing
-require('./lib/routes')(app);
+require('./lib/routes')(app, passport);
 
 // Start server
 app.listen(config.port, function () {

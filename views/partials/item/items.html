@@ -1,0 +1,73 @@
+<!--<div ng-include="'partials/navbar'"></div>-->
+<div class="itemList no-mg-pd">
+    <section class="breadcrumbs">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-8 col-xs-12">
+                    <h1>Products</h1>
+                </div>
+                <div class="col-md-2 col-xs-6">
+                    <div class="form-group form-inline">
+                        <select class="form-control" ng-model="_pageSize" ng-change="perPageChange()">
+                            <option value="">Item Per Page</option>
+                            <option value="4">4</option>
+                            <option value="8">8</option>
+                            <option value="16">16</option>
+                            <option value="All">All</option>
+                        </select>
+                        
+                    </div>
+                </div>
+                <div class="col-md-2 col-xs-6">
+                    <div class="form-group form-inline">
+                        <select class="form-control" ng-model="sortOrder" ng-change="sortChange()">
+                            <option value="">Sort by</option>
+                            <option value="views-desc">Popular</option>
+                            <option value="price-desc">Price: High to Low</option>
+                            <option value="price-asc">Price: Low to High</option>
+                            <option value="name-asc">Name</option>
+                        </select>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section>
+        <div class="container">
+            <div class="itemList_Body">
+                <div class="row">
+                    <div class="col-md-3" dir-paginate="item in items| filter:q | itemsPerPage: pageSize" current-page="currentPage" total-items="totalItems">
+                        <div class="product-container">
+                            <div class="product-block" ng-click="open(item)">
+                                <div class="image">
+                                    <img src="images/{{item.image}}" title="{{item.name}}" alt="{{item.name}}">
+                                </div>
+                                <div class="product-meta">
+                                    <h2 class="name">{{item.name}}</h2>
+                                    <div class="price">
+                                        <span class="price-old" ng-show="item.isSale">{{item.price|currency}}</span>
+                                        <span class="price-new">{{getPrice(item)|currency}}</span>
+                                    </div>
+                                    <div class="cart">
+                                        <!-- <button class="btn btn-primary btn-sm">View Detail</button> -->
+                                    </div>
+                                </div>
+                                <span class="ribbon" ng-show="item.isSale">ON SALE</span>
+                            </div>
+                            <div class="add2cart" ng-click="add(item)">
+                                <span><p>Add To Cart</p></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-offset-6 center-block text-center">
+                        <dir-pagination-controls boundary-links="true" on-page-change="pageChangeHandler(newPageNumber)" template-url="template/dirPagination.tpl.html"></dir-pagination-controls>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- <div ng-include="'partials/item/itemModalView'"></div> -->
+</div>

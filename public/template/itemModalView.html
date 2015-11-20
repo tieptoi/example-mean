@@ -1,0 +1,65 @@
+<div class="modal-header modal-header-primary">
+    <button type="button" class="close" ng-click="ok(item)" aria-hidden="true">&times;</button>
+    <h3 class="modal-title"><strong>Details of {{item.name}}</strong></h3>
+</div>
+<div class="modal-body">
+    <div class="row">
+        <div class="col-md-3">
+            <img src="images/{{item.image}}" alt="Product" class="img-thumbnail">
+        </div>
+        <!-- End of col-md-3 -->
+        <div class="col-md-9">
+            <h4><strong>Price: </strong><span class="label label-success">{{item.price|currency}}</span></h4>
+            <p class="text-danger modalQuantity">Only <strong> {{item.quantity}}</strong> left in stock</p>
+            <div class="form-inline">
+                <ng-form name="quantityForm" class="form-inline">
+                    <div class="form-group" ng-class="{ 'has-error' : quantityForm.quantity.$invalid && !quantityForm.quantity.$pristine }">
+                        <label><strong>Quantity: </strong></label>
+                        <input type="number" class="form-control" name="quantity" ng-model="item.orderQuantity" min="1" max="{{item.quantity}}" required="">
+                        <button type="button" class="btn btn-info btn-sm" ng-click="add(item,quantityForm)">
+                            <span class="glyphicon glyphicon-shopping-cart"></span>&nbsp;
+                            <strong>Add to Cart</strong>
+                        </button>
+                        <button type="button" class="btn btn-sucess btn-sm" ng-click="edit(item)">
+                            <span class="glyphicon glyphicon-pencil"></span>&nbsp;
+                            <strong>Edit</strong>
+                        </button>
+                        <span class="help-block" ng-show="quantityForm.quantity.$error.min">Quantity must be more than 1</span>
+                        <span class="help-block" ng-show="quantityForm.quantity.$error.max">Quantity must be less than available quantity</span>
+                        <span class="help-block" ng-show="quantityForm.quantity.$error.required">Quantity Field is invalid</span>
+                    </div>
+                </ng-form>
+            </div>
+            <div class="product-infor">
+                <section>
+                    <ul class="nav nav-pills">
+                        <li ng-class="{active:isSelected(1)}">
+                            <a href="" ng-click="selectTab(1)"><strong>Description</strong></a>
+                        </li>
+                        <li ng-class="{active:isSelected(2)}">
+                            <a href="" ng-click="selectTab(2)"><strong>Specification</strong></a>
+                        </li>
+                        <li ng-class="{active:isSelected(3)}">
+                            <a href="" ng-click="selectTab(3)"><strong>Reviews</strong></a>
+                        </li>
+                    </ul>
+                    <div class="panel bs-callout bs-callout-primary" ng-show="isSelected(1)">
+                        <h4></h4>
+                        <p class="text-info">{{item.description}}</p>
+                    </div>
+                    <div class="panel bs-callout bs-callout-success" ng-show="isSelected(2)">
+                        <h4></h4>
+                        <p class="text-info">{{item.specification}}</p>
+                    </div>
+                    <div class="panel bs-callout bs-callout-infor" ng-show="isSelected(3)">
+                        <p class="text-info">{{item.description}}</p>
+                    </div>
+                </section>
+            </div>
+        </div>
+        <!-- End of col-md-9 -->
+    </div>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-default" ng-click="ok(item)">Close</button>
+</div>

@@ -1,0 +1,72 @@
+<div class="row dropdown-menu table-scro llable">
+    <div id="cartTable" class="row" ng-click="$event.preventDefault();">
+        <div class="col-md-12">
+            <form name="cartForm" novalidate="">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th class="col-md-2 col-xs-2">Product</th>
+                            <th class="col-md-1 text-center">Available</th>
+                            <th class="col-md-2 text-center hidden-xs">Quantity</th>
+                            <th class="col-md-1 text-center">Price</th>
+                            <th class="col-md-1 text-center">Total</th>
+                            <th class="col-md-1 text-center hidden-xs"> #</th>
+                        </tr>
+                    </thead>
+                    <tbody id="shoppingCartBody">
+                        <tr ng-repeat="item in cart.items">
+                            <td class="col-md-2 col-xs-2">
+                                <div class="media">
+                                    <!-- <a class="thumbnail pull-left" href="#"> -->
+                                    <img class="media-object thumbnail pull-left" src="images/{{item.image}}" style="width: 72px; height: 72px">
+                                    <!-- </a> -->
+                                </div>
+                            </td>
+                            <td class="col-md-1 text-center"><strong><label class="available-quantity">{{item.quantity}}</label></strong></td>
+                            <td class="col-md-2 hidden-xs" style="text-align: center">
+                                <ng-form name="quantityForm">
+                                    <div class="form-group" ng-class="{ 'has-error' : quantityForm.quantity.$invalid && !quantityForm.quantity.$pristine }">
+                                        <input type="number" class="form-control" name="quantity" ng-change="changeQuantity()" ng-model="item.orderQuantity" min="1" max="{{item.quantity}}" required="">
+                                        <span class="help-block" ng-show="quantityForm.quantity.$error.min">Quantity must be more than 1</span>
+                                        <span class="help-block" ng-show="quantityForm.quantity.$error.max">Quantity must be less than available quantity</span>
+                                        <span class="help-block" ng-show="quantityForm.quantity.$error.required">Quantity Field is invalid</span>
+                                    </div>
+                                </ng-form>
+                            </td>
+                            <td class="col-md-1 text-center"><strong>{{item.price}}<strong></strong></strong></td>
+                                                <td class="col-md-1 text-center"><strong>{{item.orderQuantity>0 ? item.price * item.orderQuantity:0}}</strong></td>
+                            <td class="col-md-1 text-center hidden-xs">
+                                <button id="btnRemoveItem" type="button" class="btn btn-danger btn-sm" ng-click="remove(item)"> Remove
+                                    <span class="glyphicon glyphicon-remove"></span>
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                    <tfoot id="shoppingCartFooter" ng-show="cart.items.length">
+                        <tr>
+                            <td class="hidden-xs">   </td>
+                            <td class="hidden-xs">   </td>
+                            <td>   </td>
+                            <td>   </td>
+                            <td class="col-md-1 text-center">
+                                <h3>Total</h3></td>
+                            <td class="col-md-2 text-center text-total col-sm-1">
+                                <h3><strong>{{cart.total}}</strong></h3></td>
+                        </tr>
+                        <tr>
+                            <td class="hidden-xs">   </td>
+                            <td class="hidden-xs">   </td>
+                            <td>   </td>
+                            <td>   </td>
+                            <td class="col-md-1"></td>
+                            <td class="col-md-2 col-sm-1">
+                                <button type="button" class="btn btn-success btn-sm btn-md" id="btnCheckout" ng-disabled="carForm.$invalid">
+                                    Checkout <span class="glyphicon glyphicon-play"></span>
+                                </button>
+                            </td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </form>
+        </div>
+    </div></div>
